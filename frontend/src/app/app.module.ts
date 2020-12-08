@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { OrdersComponent } from './components/orders.component';
 import { NewOrderComponent } from './components/new-order.component';
+import { database } from './database.service';
 
 const appRoutes: Routes = [
   { path: '', component: OrdersComponent },
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule, RouterModule.forRoot(appRoutes), FormsModule, ReactiveFormsModule, HttpClientModule,
   ],
-  providers: [],
+  providers: [database],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

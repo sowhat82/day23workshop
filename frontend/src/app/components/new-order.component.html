@@ -3,12 +3,23 @@
 <h2>New Order</h2>
 
 <form [formGroup] = "newOrderForm">
+
     <div class="input-group mb-3">
-        <input type="text" class="form-control" formControlName = "employee_id" placeholder="employee_id" aria-label="Username" aria-describedby="basic-addon1">
+        <label class="input-group-text" for="inputGroupSelect01">employee_id</label>
+        <select class="form-select" id="employee_id" formControlName = "employee_id">
+            <option selected>Choose...</option>
+            <option *ngFor="let e of employeeIDs">{{e.id}}</option>
+        </select>
     </div>
+
     <div class="input-group mb-3">
-        <input type="text" class="form-control" formControlName = "customer_id" placeholder="customer_id" aria-label="Username" aria-describedby="basic-addon1">
+        <label class="input-group-text" for="inputGroupSelect01">customer_id</label>
+        <select class="form-select" id="customer_id" formControlName = "customer_id">
+            <option selected>Choose...</option>
+            <option *ngFor="let c of customerIDs">{{c.id}}</option>
+        </select>
     </div>
+
     <div class="input-group mb-3">
         <input type="text" class="form-control" formControlName = "shipper_id" placeholder="shipper_id" aria-label="Username" aria-describedby="basic-addon1">
     </div>
@@ -19,14 +30,27 @@
         <input type="text" class="form-control" formControlName = "tax_status_id" placeholder="tax_status_id" aria-label="Username" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" formControlName = "status_id" placeholder="status_id" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" formControlName = "order_status_id" placeholder="order_status_id" aria-label="Username" aria-describedby="basic-addon1">
     </div>
     <div class="input-group mb-3">
         <input type="text" class="form-control" formControlName = "ship_name" placeholder="ship_name" aria-label="Username" aria-describedby="basic-addon1">
     </div>
 
+    <!-- for order details table -->
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName ="product_id" placeholder="product_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName ="orderDetails_status_id" placeholder="orderDetails_status_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName ="purchase_order_id" placeholder="purchase_order_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName ="inventory_id" placeholder="inventory_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+
+
     <button type="button" class="btn btn-success float-right" [disabled] = "newOrderForm.invalid" (click) = placeOrder()>Place Order</button>
 </form>
-
-
   

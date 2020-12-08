@@ -1,3 +1,4 @@
+<br>
 <button [routerLink] = "['/new-order']" type="button" class="float-right btn btn-primary">New Order</button>
 <br>
 <h2>Existing Orders</h2>
@@ -21,6 +22,7 @@
         <td>{{r.ship_name}}</td>
         <td>{{r.ship_zip_postal_code}}</td>
         <td>{{r.order_date}}</td>
+        <button (click) = "deleteRecord(r.id)" type="button" class="btn btn-warning">Delete</button>
       </tr>
     </tbody>
   </table>
