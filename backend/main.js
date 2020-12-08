@@ -8,10 +8,14 @@ global.env = secureEnv({secret:'mySecretPassword'})
 
 // SQL
 const SQL_SELECT_ALL_FROM_ORDERS = 'select * from orders order by id desc;'
+const SQL_SELECT_ALL_FROM_ORDER_DETAILS = 'select * from order_details order by id desc;'
+
 const SQL_ADD_NEW_ORDER = 'insert into orders (employee_id, customer_id, shipper_id, ship_zip_postal_code, tax_status_id, status_id, ship_name) values (?, ?, ?, ?, ?, ?, ?);'
 const SQL_ADD_NEW_ORDER_DETAILS='insert into order_details (order_id, product_id, status_id, purchase_order_id, inventory_id) values (LAST_INSERT_ID(), ?,?,?,?);'
+
 const SQL_DELETE_ID_FROM_ORDERS = 'delete from orders where id = ?;'
 const SQL_DELETE_ID_FROM_ORDER_DETAILS = 'delete from order_details where order_id = ?;'
+
 const SQL_SELECT_ALL_EMPLOYEE_IDS = 'select id from employees;'
 const SQL_SELECT_ALL_CUSTOMER_IDS = 'select id from customers;'
 
@@ -54,12 +58,28 @@ app.get('/orders', async (req, resp) => {
 
 	const conn = await pool.getConnection()
 	try {
-		// const [ result, _ ] = await conn.query(SQL_BOOK_LETTER, [ `${letter}%`, LIMIT, offset ])
 		const [ result, _ ] = await conn.query(SQL_SELECT_ALL_FROM_ORDERS)
 
 		resp.status(200)
 		resp.type('text/html').send(result)
-//        resp.send(result)
+        
+	} catch(e) {
+		console.error('ERROR: ', e)
+		resp.status(500)
+		resp.end()
+	} finally {
+		conn.release()
+	}
+})
+
+app.get('/order-details', async (req, resp) => {
+
+	const conn = await pool.getConnection()
+	try {
+		const [ result, _ ] = await conn.query(SQL_SELECT_ALL_FROM_ORDER_DETAILS)
+
+		resp.status(200)
+		resp.type('text/html').send(result)
         
 	} catch(e) {
 		console.error('ERROR: ', e)
@@ -84,6 +104,7 @@ app.get('/employees', async (req, resp) => {
 		conn.release()
 	}
 })
+
 app.get('/customers', async (req, resp) => {
 	const conn = await pool.getConnection()
 	try {
@@ -100,6 +121,8 @@ app.get('/customers', async (req, resp) => {
 })
 
 app.post('/order', async (req, resp) => {
+
+	// for orders table
     const employee_id = req.body.employee_id;
     const customer_id = req.body.customer_id;
     const shipper_id = req.body.shipper_id;
@@ -109,8 +132,6 @@ app.post('/order', async (req, resp) => {
     const ship_name = req.body.ship_name;
  
 	// for order details table
-
- //   const product_id = req.body.product_id;  MUST GET ORDER TABLE AUTO INCREMENT NUMBER HERE
     const product_id = req.body.product_id;
     const orderDetails_status_id = req.body.orderDetails_status_id;
     const purchase_order_id = req.body.purchase_order_id;
@@ -122,9 +143,6 @@ app.post('/order', async (req, resp) => {
         const [ result, _ ] = await conn.query(
             SQL_ADD_NEW_ORDER, 
             [employee_id, customer_id, shipper_id, ship_zip_postal_code, tax_status_id, order_status_id, ship_name],
-
-			// SQL_ADD_NEW_ORDER_DETAILS, 
-            // [order_id, product_id, orderDetails_status_id, purchase_order_id, inventory_id]
 		)
 
         const [ result2, _2 ] = await conn.query(
