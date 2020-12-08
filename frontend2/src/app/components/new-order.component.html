@@ -1,0 +1,32 @@
+<button [routerLink] = "['/orders']" type="button" class="float-right btn btn-primary">Back</button>
+<br>
+<h2>New Order</h2>
+
+<form [formGroup] = "newOrderForm">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "employee_id" placeholder="employee_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "customer_id" placeholder="customer_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "shipper_id" placeholder="shipper_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "ship_zip_postal_code" placeholder="ship_zip_postal_code" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "tax_status_id" placeholder="tax_status_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "status_id" placeholder="status_id" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" formControlName = "ship_name" placeholder="ship_name" aria-label="Username" aria-describedby="basic-addon1">
+    </div>
+
+    <button type="button" class="btn btn-success float-right" [disabled] = "newOrderForm.invalid" (click) = placeOrder()>Place Order</button>
+</form>
+
+
+  

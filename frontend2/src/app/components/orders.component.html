@@ -1,0 +1,26 @@
+<button [routerLink] = "['/new-order']" type="button" class="float-right btn btn-primary">New Order</button>
+<br>
+<h2>Existing Orders</h2>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">cust_id</th>
+        <th scope="col">emp_id</th>
+        <th scope="col">ship_name</th>
+        <th scope="col">postal_code</th>
+        <th scope="col">order_date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let r of result">
+        <th scope="row">{{r.id}}</th>
+        <td>{{r.customer_id}}</td>
+        <td>{{r.employee_id}}</td>
+        <td>{{r.ship_name}}</td>
+        <td>{{r.ship_zip_postal_code}}</td>
+        <td>{{r.order_date}}</td>
+      </tr>
+    </tbody>
+  </table>
