@@ -11,7 +11,7 @@ const SQL_SELECT_ALL_FROM_ORDERS = 'select * from orders order by id desc;'
 const SQL_SELECT_ALL_FROM_ORDER_DETAILS = 'select * from order_details order by id desc;'
 
 const SQL_ADD_NEW_ORDER = 'insert into orders (employee_id, customer_id, shipper_id, ship_zip_postal_code, tax_status_id, status_id, ship_name) values (?, ?, ?, ?, ?, ?, ?);'
-const SQL_ADD_NEW_ORDER_DETAILS='insert into order_details (order_id, product_id, status_id, purchase_order_id, inventory_id) values (LAST_INSERT_ID(), ?,?,?,?);'
+const SQL_ADD_NEW_ORDER_DETAILS='insert into order_details (order_id, product_ids, status_id, purchase_order_id, inventory_id) values (LAST_INSERT_ID(), ?,?,?,?);'
 
 const SQL_DELETE_ID_FROM_ORDERS = 'delete from orders where id = ?;'
 const SQL_DELETE_ID_FROM_ORDER_DETAILS = 'delete from order_details where order_id = ?;'
@@ -137,9 +137,11 @@ app.post('/order', async (req, resp) => {
     const purchase_order_id = req.body.purchase_order_id;
     const inventory_id = req.body.inventory_id;
 
-
 	const conn = await pool.getConnection()
 	try {
+
+		await conn.beginTransaction() // to prevent only one DB from being updated
+
         const [ result, _ ] = await conn.query(
             SQL_ADD_NEW_ORDER, 
             [employee_id, customer_id, shipper_id, ship_zip_postal_code, tax_status_id, order_status_id, ship_name],
@@ -150,14 +152,17 @@ app.post('/order', async (req, resp) => {
             [product_id, orderDetails_status_id, purchase_order_id, inventory_id],
 		)
 
+		await conn.commit()
 
 		resp.status(200)
 		resp.format({
 			html: () => { resp.send('Thank you'); },
 			json: () => { resp.json({status: 'ok'});}
+
 		})
 			
 	} catch(e) {
+		conn.rollback()
 		resp.status(500).send(e)
 		resp.end()
 	} finally {
@@ -174,15 +179,21 @@ app.post('/delete', async (req, resp) => {
 	const conn = await pool.getConnection()
 	try {
 
+		await conn.beginTransaction() // to prevent one table from being updated and not the other
+
 		const [ result2, _2 ] = await conn.query(SQL_DELETE_ID_FROM_ORDER_DETAILS, [id])
 
 		const [ result, _ ] = await conn.query(SQL_DELETE_ID_FROM_ORDERS, [id])
+
+		await conn.commit()
 
 		resp.status(200)
 		resp.type('application/json')
         resp.json(result)
         
 	} catch(e) {
+		conn.rollback()
+
 		console.error('ERROR: ', e)
 		resp.status(500)
 		resp.end()
