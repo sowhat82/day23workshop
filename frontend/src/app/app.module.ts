@@ -8,10 +8,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { OrdersComponent } from './components/orders.component';
 import { NewOrderComponent } from './components/new-order.component';
 import { database } from './database.service';
+import { OrderDetailsComponent } from './components/order-details.component';
 
 const appRoutes: Routes = [
   { path: '', component: OrdersComponent },
   { path: 'orders', component: OrdersComponent },
+  { path: 'order-details', component: OrderDetailsComponent },
   { path: 'new-order', component: NewOrderComponent },
   ];
 
@@ -19,7 +21,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     OrdersComponent,
-    NewOrderComponent
+    NewOrderComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(appRoutes), FormsModule, ReactiveFormsModule, HttpClientModule,

@@ -1,0 +1,28 @@
+
+<button [routerLink] = "['/new-order']" type="button" class="float-right btn btn-primary">New Order</button>
+<br>
+<h2>Order Details</h2>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">order_id</th>
+        <th scope="col">product_id</th>
+        <th scope="col">status_id</th>
+        <th scope="col">purchase_order_id</th>
+        <th scope="col">inventory_id</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let r of result">
+        <th scope="row">{{r.id}}</th>
+        <td>{{r.order_id}}</td>
+        <td>{{r.product_id}}</td>
+        <td>{{r.status_id}}</td>
+        <td>{{r.purchase_order_id}}</td>
+        <td>{{r.inventory_id}}</td>
+        <button (click) = "deleteRecord(r.order_id)" type="button" class="btn btn-warning">Delete</button>
+      </tr>
+    </tbody>
+  </table>
